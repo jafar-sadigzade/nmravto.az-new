@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="Jafar Sadigzade">
+        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+        <title> NMRavto.az | {% block signuptitle %} {% endblock %} </title>
+
+        <link rel="stylesheet" href="{% static 'css/signupstyle.css' %}">
+        <link href="{% static 'css/boxicons.min.css' %}" rel='stylesheet'>
+        {% block css_code %} {% endblock %}
+
+    </head>
+    <body>
+        {% block signup_content %}
+
+        {% endblock %}
+        <script src="{% static 'js/signupscript.js' %}"></script>
+        {% block js_code %} {% endblock %}
+    </body>
+
+
+</html>

@@ -1,0 +1,66 @@
+{% load static %}
+<!Doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Jafar Sadigzade">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <title>NMRavto.az | {% block title %} {% endblock %}</title>
+    {% block csscodes %}  {% endblock %}
+    <script>
+        function showErrorMessage() {
+            alert("Elan yerləşdirmək üçün səhifəyə giriş edin.");
+        }
+
+        function checkAuthentication() {
+            const isAuthenticated = false; // Replace with your authentication check
+
+            if (!isAuthenticated) {
+                showErrorMessage();
+            } else {
+                // Redirect to the desired link or perform the authenticated action
+                window.location.href = "{% url 'login' %}";
+            }
+        }
+    </script>
+
+
+  </head>
+
+<body>
+    {% block content %}
+
+    {% endblock %}
+
+    <!-- ***** Footer Start ***** -->
+    {% include 'partials/_footer.html' %}
+    <!-- ***** Footer End ***** -->
+
+    {% block jscodes %}
+
+    {% endblock %}
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script>
+    <script src="{% static 'js/mixitup.js' %}"></script>
+    <script src="{% static 'js/accordions.js' %}"></script>
+
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+</body>
+
+</html>

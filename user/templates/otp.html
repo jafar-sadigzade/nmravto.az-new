@@ -1,0 +1,111 @@
+{% extends 'signupbase.html' %}
+{% load static %}
+
+{% block signuptitle %} OTP Təsdiqi {% endblock %}
+
+{% block css_code %}
+    <style>
+        /* CSS for Send Again button */
+        .send-again-form {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .send-again-form button {
+            background-color: #007bff; /* Button background color */
+            color: white; /* Button text color */
+            padding: 10px 20px; /* Button padding */
+            border: none; /* Remove default border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            font-size: 16px; /* Font size */
+        }
+
+        .send-again-form button:hover {
+            background-color: #0056b3; /* Darker background on hover */
+        }
+
+        .timer {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff0000;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block signup_content %}
+
+    <section class="container forms">
+        <div class="form login">
+            <div class="form-content">
+                <header>OTP Təsdiqi</header>
+                <form method="POST">
+                    {% csrf_token %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <h4 class="alert {{ message.tags }} m-2"> {{message}} </h4>
+                        {% endfor %}
+                    {% endif %}
+                    <div class="field input-field">
+                        <label>
+                            <input type="text" placeholder="Birdəfəlik parol" class="input" name="otp_code">
+                        </label>
+                    </div>
+                    {% if show_timer %}
+                    <div class="timer">
+                        OTP: <span id="countdown"></span>
+                    </div>
+                    {% endif %}
+                    <div class="field button-field">
+                        <button id="submit-button">Təsdiqlə</button>
+                    </div>
+                </form>
+                <form method="POST" action="{% url 'validate_otp_view' username=username phone_number=phone_number %}"
+                      class="send-again-form">
+                    {% csrf_token %}
+                    <button type="submit" name="send_again">Yenidən Göndər</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    {% if show_timer %}
+        {% block js_code %}
+            <script>
+            // Get the expiration time from the template context
+            const otpExpirationTime = new Date("{{ otp_expiration_time|date:'c' }}");
+
+            function startCountdown(duration, display) {
+                let timer = duration, minutes, seconds;
+                const interval = setInterval(function () {
+                    minutes = parseInt(timer / 60, 10);
+                    seconds = parseInt(timer % 60, 10);
+
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    display.textContent = minutes + ":" + seconds;
+
+                    if (--timer < 0) {
+                        clearInterval(interval);
+                        document.querySelector('input[name="otp"]').disabled = true;
+                        document.getElementById('submit-button').disabled = true;
+                        display.textContent = "Müddəti bitdi, zəhmət olmasa yenidən göndərin!";
+                    }
+                }, 1000);
+            }
+
+            window.onload = function () {
+                const now = new Date();
+                const timeDiff = otpExpirationTime - now;
+                const display = document.querySelector('#countdown');
+                startCountdown(Math.floor(timeDiff / 1000), display);
+            };
+        </script>
+        {% endblock %}
+    {% endif %}
+
+{% endblock %}
